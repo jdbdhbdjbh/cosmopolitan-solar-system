@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSMOPOLITAN - Солнечная Система</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>COSMOPOLITAN</h1>
+        <p>Ваш путеводитель по Солнечной системе</p>
+    </header>
+
+    <main class="solar-system-view">
+        <div class="planet-list">
+            <div class="planet" id="mercury" data-planet="mercury">
+                <span class="planet-name">Меркурий</span>
+            </div>
+            <div class="planet" id="venus" data-planet="venus">
+                <span class="planet-name">Венера</span>
+            </div>
+            <div class="planet" id="earth" data-planet="earth">
+                <span class="planet-name">Земля</span>
+            </div>
+            </div>
+        [attachment_0](attachment)
+    </main>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <h2 id="modal-planet-name"></h2>
+            <p id="modal-planet-facts"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+/* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000000; /* Черный фон для космоса */
+    color: #ffffff; /* Белый текст */
+    text-align: center;
+}
+
+header {
+    padding: 20px;
+    background-color: rgba(10, 10, 20, 0.8); /* Темный полупрозрачный заголовок */
+    margin-bottom: 20px;
+}
+
+h1 {
+    font-size: 3em;
+    letter-spacing: 5px; /* Увеличенный интервал для COSMOPOLITAN */
+    margin: 0;
+}
+
+/* Стили для списка планет */
+.planet-list {
+    display: flex;
+    justify-content: center;
+    gap: 30px; /* Расстояние между планетами */
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.planet {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #ffffff33;
+    position: relative;
+}
+
+.planet:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 15px #ffcc00; /* Желтое свечение при наведении */
+}
+
+.planet-name {
+    position: absolute;
+    bottom: -25px;
+    font-size: 0.9em;
+}
+
+/* Индивидуальные стили планет для цвета/размера */
+#mercury { background-color: #9b9a99; width: 60px; height: 60px; }
+#venus { background-color: #e59752; width: 80px; height: 80px; }
+#earth { background-color: #4c7d9a; width: 90px; height: 90px; }
+/* Добавьте стили для других планет */
+
+/* Стили модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.9); /* Темный фон */
+}
+
+.modal-content {
+    background-color: #1a1a2e; /* Цвет фона модального окна */
+    margin: 15% auto; /* 15% сверху и по центру */
+    padding: 40px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #ffcc00;
+}
+
+.close-button {
+    color: #ffffff;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #ffcc00;
+    text-decoration: none;
+    cursor: pointer;
+}
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Данные о планетах
+    const planetFacts = {
+        mercury: {
+            name: "Меркурий",
+            facts: "Меркурий - самая маленькая планета и ближайшая к Солнцу. Год на Меркурии длится всего 88 земных дней.",
+            // Добавьте больше данных (изображение, подробные факты)
+        },
+        venus: {
+            name: "Венера",
+            facts: "Венера - самая горячая планета в Солнечной системе из-за парникового эффекта. Она вращается в обратном направлении.",
+        },
+        earth: {
+            name: "Земля",
+            facts: "Земля - единственная известная планета, на которой есть жизнь. Около 71% поверхности покрыто водой.",
+        },
+        // Добавьте данные для Марса, Юпитера, Сатурна, Урана, Нептуна
+    };
+
+    // 2. Элементы DOM
+    const planets = document.querySelectorAll('.planet');
+    const modal = document.getElementById('modal');
+    const modalPlanetName = document.getElementById('modal-planet-name');
+    const modalPlanetFacts = document.getElementById('modal-planet-facts');
+    const closeButton = document.querySelector('.close-button');
+
+    // 3. Обработчик клика по планете
+    planets.forEach(planet => {
+        planet.addEventListener('click', () => {
+            const planetKey = planet.getAttribute('data-planet');
+            const data = planetFacts[planetKey];
+
+            if (data) {
+                modalPlanetName.textContent = data.name;
+                modalPlanetFacts.textContent = data.facts;
+                modal.style.display = 'block'; // Показать модальное окно
+            }
+        });
+    });
+
+    // 4. Закрытие модального окна
+    closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Закрытие при клике вне модального окна
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
